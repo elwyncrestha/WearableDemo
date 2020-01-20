@@ -1,6 +1,7 @@
 package com.github.elwyncrestha.wearabledemo;
 
 import android.app.Notification;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -13,10 +14,11 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.github.elwyncrestha.wearabledemo.channel.ChannelUtils;
 import com.github.elwyncrestha.wearabledemo.listener.CustomBroadcastReceiver;
+import com.github.elwyncrestha.wearabledemo.service.RandomNumberService;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnOne, btnTwo;
+    private Button btnOne, btnTwo, btnServiceStart, btnServiceEnd;
     private NotificationManagerCompat notificationManagerCompat;
     private CustomBroadcastReceiver broadcastReceiver = new CustomBroadcastReceiver();
 
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.btnOne = findViewById(R.id.btnOne);
         this.btnTwo = findViewById(R.id.btnTwo);
+        this.btnServiceStart = findViewById(R.id.btnServiceStart);
+        this.btnServiceEnd = findViewById(R.id.btnServiceEnd);
 
         this.notificationManagerCompat = NotificationManagerCompat.from(this);
         ChannelUtils channelUtils = new ChannelUtils(this);
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
         });
+
         this.btnTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +73,20 @@ public class MainActivity extends AppCompatActivity {
                         "Second message",
                         "Second message body"
                 );
+            }
+        });
+
+        this.btnServiceStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(MainActivity.this, RandomNumberService.class));
+            }
+        });
+
+        this.btnServiceEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(new Intent(MainActivity.this, RandomNumberService.class));
             }
         });
     }
